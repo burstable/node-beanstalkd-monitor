@@ -1,0 +1,48 @@
+{
+  "name": "beanstalkd-monitor",
+  "version": "1.0.0",
+  "description": "Monitor beanstalkd tube health and trigger alerts",
+  "main": "lib/index.js",
+  "options": {
+    "mocha": "--require resources/mocha-bootload --check-leaks --timeout 10000 --colors --reporter spec --recursive"
+  },
+  "scripts": {
+    "test": "npm run test-unit",
+    "test-unit": "NODE_PATH=src NODE_ENV=test mocha $npm_package_options_mocha 'test/unit/**/*.test.js'",
+    "build": "babel src -d lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/burstable/node-beanstalkd-monitor.git"
+  },
+  "keywords": [
+    "beanstalkd",
+    "monitor"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/burstable/node-beanstalkd-monitor/issues"
+  },
+  "homepage": "https://github.com/burstable/node-beanstalkd-monitor#readme",
+  "devDependencies": {
+    "babel-cli": "^6.9.0",
+    "babel-plugin-transform-object-rest-spread": "^6.8.0",
+    "babel-preset-async-to-bluebird": "^1.1.0",
+    "babel-preset-es2015-node4": "^2.1.0",
+    "babel-register": "^6.9.0",
+    "mocha": "^2.5.3",
+    "moment": "^2.13.0",
+    "publish": "^0.6.0",
+    "sinon": "^1.17.4",
+    "sinon-as-promised": "^4.0.0",
+    "unexpected": "^10.13.3",
+    "unexpected-sinon": "^10.2.1"
+  },
+  "dependencies": {
+    "beanstalkd": "^1.0.4",
+    "bluebird": "^3.4.0",
+    "lodash": "^4.13.1",
+    "ms": "^0.7.1"
+  }
+}

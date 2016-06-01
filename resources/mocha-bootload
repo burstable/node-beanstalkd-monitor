@@ -1,0 +1,7 @@
+require('babel-register');
+
+var expect = require('unexpected');
+expect.use(require('unexpected-sinon'));
+
+var Bluebird = require('bluebird')
+require('sinon-as-promised')(Bluebird)
