@@ -1,7 +1,7 @@
 import {EventEmitter} from 'events';
 import Promise from 'bluebird';
 import Beanstalkd from 'beanstalkd';
-import {JOB_STATES, DEFAULT_DATA_INTERVALS} from './misc';
+import {JOB_STATES, DEFAULT_DATA_INTERVALS, DEFAULT_POLL_INTERVAL} from './misc';
 import ms from 'ms';
 import {map} from 'lodash';
 
@@ -18,7 +18,7 @@ export default class Monitor extends EventEmitter {
     this._history = [];
     this._running = false;
 
-    this._pollInterval = typeof this.options.pollInterval === 'number' && this.options.pollInterval || ms(this.options.pollInterval || '1m');
+    this._pollInterval = typeof this.options.pollInterval === 'number' && this.options.pollInterval || ms(this.options.pollInterval || DEFAULT_POLL_INTERVAL);
     this._dataIntervals = this.options.dataIntervals || DEFAULT_DATA_INTERVALS;
   }
 
@@ -96,6 +96,7 @@ export default class Monitor extends EventEmitter {
     if (this._history.length) {
       history = this._dataIntervals.map(time => {
         let naivePosition = ms(time) / this._pollInterval - 1;
+
         if (this._history.length - 1 < naivePosition) return null;
         if (!this._history[naivePosition]) return null;
 

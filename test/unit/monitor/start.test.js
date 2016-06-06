@@ -11,6 +11,9 @@ describe('Monitor', function () {
     beforeEach(function () {
       this.sinon = sinon.sandbox.create();
       this.clock = this.sinon.useFakeTimers(Date.now());
+
+      this.monitor = new Monitor();
+      this.sinon.stub(this.monitor, 'poll').resolves();
     });
 
     afterEach(function () {
@@ -18,11 +21,10 @@ describe('Monitor', function () {
     });
 
     it('should set _running', function () {
-      let monitor = new Monitor();
-      expect(monitor._running, 'to equal', false);
+      expect(this.monitor._running, 'to equal', false);
 
-      monitor.start();
-      expect(monitor._running, 'to equal', true);
+      this.monitor.start();
+      expect(this.monitor._running, 'to equal', true);
     });
 
     it('should start polling', function () {
@@ -61,11 +63,10 @@ describe('Monitor', function () {
     });
 
     it('should emit start', function () {
-      let monitor = new Monitor();
       let spy = this.sinon.spy();
 
-      monitor.on('start', spy);
-      monitor.start();
+      this.monitor.on('start', spy);
+      this.monitor.start();
 
       expect(spy, 'was called once');
     });

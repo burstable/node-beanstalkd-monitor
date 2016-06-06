@@ -9,3 +9,4 @@ export const DEFAULT_DATA_INTERVALS = [
   '12h',
   '24h'
 ];
+export const DEFAULT_POLL_INTERVAL = '1m';
