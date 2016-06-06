@@ -3,7 +3,7 @@ import AlertTriggerHandler from 'AlertTriggerHandler';
 import sinon from 'sinon';
 import Promise from 'bluebird';
 
-describe.only('AlertTriggerHandler', function () {
+describe('AlertTriggerHandler', function () {
   describe('evaluate', function () {
     beforeEach(function () {
       this.sinon = sinon.sandbox.create();
