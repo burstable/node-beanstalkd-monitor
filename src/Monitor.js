@@ -4,6 +4,7 @@ import Beanstalkd from 'beanstalkd';
 import {JOB_STATES, DEFAULT_DATA_INTERVALS, DEFAULT_POLL_INTERVAL} from './misc';
 import ms from 'ms';
 import {map} from 'lodash';
+import AlertTriggerHandler from './AlertTriggerHandler';
 
 export default class Monitor extends EventEmitter {
   constructor(host, port, options = {}) {
@@ -14,12 +15,15 @@ export default class Monitor extends EventEmitter {
 
     this.options = options;
 
-    this._alertTriggers = [];
+    this.alertTriggerHandler = new AlertTriggerHandler();
     this._history = [];
     this._running = false;
 
     this._pollInterval = typeof this.options.pollInterval === 'number' && this.options.pollInterval || ms(this.options.pollInterval || DEFAULT_POLL_INTERVAL);
     this._dataIntervals = this.options.dataIntervals || DEFAULT_DATA_INTERVALS;
+
+    this.on('update', data => this.alertTriggerHandler.evaluate(data));
+    this.alertTriggerHandler.on('alert', alert => this.emit('alert', alert));
   }
 
   async connection() {
@@ -38,10 +42,6 @@ export default class Monitor extends EventEmitter {
 
   async tubes() {
     return await this.connection().call('listTubes');
-  }
-
-  addAlertTrigger(trigger) {
-    this._alertTriggers.push(trigger);
   }
 
   async start() {
@@ -143,5 +143,14 @@ export default class Monitor extends EventEmitter {
     if (this._history.length > naiveLastPosition) {
       this._history = this._history.slice(0, naiveLastPosition + 1);
     }
+  }
+
+  addAlertTrigger(tube, trigger) {
+    if (trigger === undefined) {
+      trigger = tube;
+      tube = undefined;
+    }
+
+    this.alertTriggerHandler.push(tube, trigger);
   }
 }
