@@ -9,7 +9,8 @@
   "scripts": {
     "test": "npm run test-unit",
     "test-unit": "NODE_PATH=src NODE_ENV=test mocha $npm_package_options_mocha 'test/unit/**/*.test.js'",
-    "build": "babel src -d lib"
+    "build": "babel src -d lib",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
