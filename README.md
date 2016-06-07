@@ -2,6 +2,10 @@
 
 Monitor beanstalkd tube health and trigger alerts
 
+```
+npm install --save beanstalkd-monitor
+```
+
 ## Basic usage
 
 ```js
